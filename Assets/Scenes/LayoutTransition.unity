@@ -6058,13 +6058,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   User: {fileID: 686004066}
-  ObjectPrefab: {fileID: 0}
-  IntersectionPrefab: {fileID: 0}
   ObjectSize: 0.5
   ObjectDistance: 0.1
-  ObjectNumber: 6
   UserHeightOffset: 1.8
-  minRadius: 0.7
+  WorkSpaceHeight: 1
+  radius: 0.7
   smoothDelta: 10
   animationSpeed: 10
   EXP: 1
@@ -6087,7 +6085,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bd0bb729cb6159b4ab21c5f62cad24ee, type: 3}
+  - {fileID: 2100000, guid: 48a6b175c7eab1440817369f7b29faa1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6380,7 +6378,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1747915788
 Transform:
   m_ObjectHideFlags: 0

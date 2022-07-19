@@ -60,100 +60,97 @@ public class PersonalWorkSpace : MonoBehaviour
 
         perimeter = 2 * radius * Mathf.PI;
        
+        if (perimeter > ObjectNumber * ObjectDistance)
+        {
 
-            if (perimeter > ObjectNumber * ObjectDistance)
+
+            vertexCount = (int)(perimeter / ObjectDistance) + 1;
+
+            int smoothVertexCount = vertexCount * smoothDelta;
+
+            if (vertexCount > ObjectNumber * 2 && smoothVertexCount / 4 - (3 * smoothDelta) > 0)
             {
+                angleOffset = Vector3.SignedAngle(User.forward, new Vector3(0, User.position.y, 0) - User.position, Vector3.up);
+                SetupCircle(radius, smoothVertexCount, angleOffset);
 
+                int j = smoothVertexCount / 4 - (3 * smoothDelta);
 
-                vertexCount = (int)(perimeter / ObjectDistance) + 1;
-
-                int smoothVertexCount = vertexCount * smoothDelta;
-
-                if (vertexCount > ObjectNumber * 2 && smoothVertexCount / 4 - (3 * smoothDelta) > 0)
+                foreach (Transform t in transform)
                 {
-                    angleOffset = Vector3.SignedAngle(User.forward, new Vector3(0, User.position.y, 0) - User.position, Vector3.up);
-                    SetupCircle(radius, smoothVertexCount, angleOffset);
+                    t.position = Vector3.Lerp(t.position, lineRenderer.GetPosition(j) + Vector3.up * WorkSpaceHeight, Time.deltaTime * animationSpeed);
+                    //t.position = lineRenderer.GetPosition(j) + Vector3.up * heightList[t];
+                    //if(t.position.z > 0)
+                    //    t.position = new Vector3(t.position.x, t.position.y, 0);
+                    j = j + smoothDelta;
 
-                    int j = smoothVertexCount / 4 - (3 * smoothDelta);
-
-                    foreach (Transform t in transform)
-                    {
-                        t.position = Vector3.Lerp(t.position, lineRenderer.GetPosition(j) + Vector3.up * WorkSpaceHeight, Time.deltaTime * animationSpeed);
-                        //t.position = lineRenderer.GetPosition(j) + Vector3.up * heightList[t];
-                        //if(t.position.z > 0)
-                        //    t.position = new Vector3(t.position.x, t.position.y, 0);
-                        j = j + smoothDelta;
-
-                        t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
-                        t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
-                    }
-
-
+                    t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
+                    t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
                 }
-                else
-                {
-                    if (smoothToCircle)
-                    {
-                        angleOffset = Vector3.SignedAngle(User.forward, new Vector3(0, User.position.y, 0) - User.position, Vector3.up) * 3f;
-                        SetupCircle(radius, smoothVertexCount, angleOffset);
 
-                        foreach (Transform t in transform)
-                        {
-                            t.position = Vector3.Lerp(t.position, lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * WorkSpaceHeight, Time.deltaTime * animationSpeed);
-                            //t.position = lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * heightList[t];
-                            //if (t.position.z > 0)
-                            //    t.position = new Vector3(t.position.x, t.position.y, 0);
-                            t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
-                            t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
-                        }
-                    }
-                    else
-                    {
-                        radius = minRadius;
-
-                        perimeter = ObjectNumber * ObjectDistance;
-                        vertexCount = ObjectNumber;
-                        smoothVertexCount = vertexCount * smoothDelta;
-                        angleOffset = Vector3.SignedAngle(User.forward, new Vector3(0, User.position.y, 0) - User.position, Vector3.up) * 3f;
-
-                        SetupCircle(radius, smoothVertexCount, angleOffset);
-
-                        foreach (Transform t in transform)
-                        {
-
-                            t.position = Vector3.Lerp(t.position, lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * WorkSpaceHeight, Time.deltaTime * animationSpeed);
-                            //t.position = lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * heightList[t];
-                            //if (t.position.z > 0)
-                            //    t.position = new Vector3(t.position.x, t.position.y, 0);
-                            t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
-                            t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
-                        }
-                    }
-                }
 
             }
             else
             {
-                perimeter = ObjectNumber * ObjectDistance;
-                vertexCount = ObjectNumber;
-                int smoothVertexCount = vertexCount * smoothDelta;
-                //angleOffset = Vector3.SignedAngle(User.forward, Vector3.zero - User.position, Vector3.up);
-                angleOffset = previousAngleOffset;
-                //Debug.Log("angle offset: " + angleOffset);
-
-                SetupCircle(radius, smoothVertexCount, (angleOffset));
-
-                foreach (Transform t in transform)
+                if (smoothToCircle)
                 {
-                    t.position = Vector3.Lerp(t.position, lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * WorkSpaceHeight, Time.deltaTime * animationSpeed);
-                    //t.position = lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * heightList[t];
+                    angleOffset = Vector3.SignedAngle(User.forward, new Vector3(0, User.position.y, 0) - User.position, Vector3.up) * 3f;
+                    SetupCircle(radius, smoothVertexCount, angleOffset);
 
-                    //if (t.position.z > 0)
-                    //    t.position = new Vector3(t.position.x, t.position.y, 0);
-                    t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
-                    t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
+                    foreach (Transform t in transform)
+                    {
+                        t.position = Vector3.Lerp(t.position, lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * WorkSpaceHeight, Time.deltaTime * animationSpeed);
+                        //t.position = lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * heightList[t];
+                        //if (t.position.z > 0)
+                        //    t.position = new Vector3(t.position.x, t.position.y, 0);
+                        t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
+                        t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
+                    }
+                }
+                else
+                {
+                    perimeter = ObjectNumber * ObjectDistance;
+                    vertexCount = ObjectNumber;
+                    smoothVertexCount = vertexCount * smoothDelta;
+                    angleOffset = Vector3.SignedAngle(User.forward, new Vector3(0, User.position.y, 0) - User.position, Vector3.up) * 3f;
+
+                    SetupCircle(radius, smoothVertexCount, angleOffset);
+
+                    foreach (Transform t in transform)
+                    {
+
+                        t.position = Vector3.Lerp(t.position, lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * WorkSpaceHeight, Time.deltaTime * animationSpeed);
+                        //t.position = lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * heightList[t];
+                        //if (t.position.z > 0)
+                        //    t.position = new Vector3(t.position.x, t.position.y, 0);
+                        t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
+                        t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
+                    }
                 }
             }
+
+        }
+        else
+        {
+            //perimeter = ObjectNumber * ObjectDistance;
+            //vertexCount = ObjectNumber;
+            //int smoothVertexCount = vertexCount * smoothDelta;
+            ////angleOffset = Vector3.SignedAngle(User.forward, Vector3.zero - User.position, Vector3.up);
+            //angleOffset = previousAngleOffset;
+            ////Debug.Log("angle offset: " + angleOffset);
+
+            //SetupCircle(radius, smoothVertexCount, (angleOffset));
+
+            //foreach (Transform t in transform)
+            //{
+            //    t.position = Vector3.Lerp(t.position, lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * WorkSpaceHeight, Time.deltaTime * animationSpeed);
+            //    //t.position = lineRenderer.GetPosition(t.GetSiblingIndex() * smoothDelta) + Vector3.up * heightList[t];
+
+            //    //if (t.position.z > 0)
+            //    //    t.position = new Vector3(t.position.x, t.position.y, 0);
+            //    t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
+            //    t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
+            //}
+        }
 
         previousAngleOffset = angleOffset;
     }
