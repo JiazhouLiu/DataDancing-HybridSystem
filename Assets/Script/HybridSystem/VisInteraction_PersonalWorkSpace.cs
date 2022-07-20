@@ -112,17 +112,22 @@ public class VisInteraction_PersonalWorkSpace : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //if (other.CompareTag("DisplaySurface"))
+        //{
+        //    isTouchingDisplaySurface = true;
+        //    touchingSurface = other.transform;
+        //    currentRigidbody.isKinematic = true;
+        //}
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
         if (other.CompareTag("DisplaySurface"))
         {
             isTouchingDisplaySurface = true;
             touchingSurface = other.transform;
             currentRigidbody.isKinematic = true;
         }
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-
     }
 
     private void OnTriggerExit(Collider other)

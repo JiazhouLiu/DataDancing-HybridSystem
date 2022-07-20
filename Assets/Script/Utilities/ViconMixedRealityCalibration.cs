@@ -23,7 +23,7 @@ public class ViconMixedRealityCalibration : MonoBehaviour
     public bool calibrated = false;
     void Start()
     {
-        //StartCoroutine(Delay());
+        StartCoroutine(Delay());
     }
    
     IEnumerator Delay()

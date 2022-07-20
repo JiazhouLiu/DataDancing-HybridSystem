@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 
 [RequireComponent(typeof(LineRenderer))]
 public class PersonalWorkSpace : MonoBehaviour
 {
     [Header("Reference")]
     public ViewManager VM;
+    public VRTK_ControllerEvents rightCE;
 
     [Header("Variables")]
     public float ObjectSize = 0.5f;
@@ -34,6 +36,7 @@ public class PersonalWorkSpace : MonoBehaviour
 
     private int vertexCount = 0;
     private float previousAngleOffset = 0;
+    private float rotationOffset = 0;
 
     private OneEuroFilter<Vector3> vector3Filter;
     private float filterFrequency = 60.0f;
@@ -61,16 +64,20 @@ public class PersonalWorkSpace : MonoBehaviour
         ObjectDistance += ObjectSize;
 
         vector3Filter = new OneEuroFilter<Vector3>(filterFrequency);
+
+        rotationOffset = transform.localEulerAngles.y;
     }
 
     private void Update()
     {
-        if (Input.GetKey(SlideRight))  // slide right
+        rotationOffset = Waist.localEulerAngles.y;
+
+        if (Input.GetKey(SlideRight) || rightCE.buttonOnePressed)  // slide right
         {
             angleOffset += 0.5f;
         }
 
-        if (Input.GetKey(SlideLeft)) // slide left
+        if (Input.GetKey(SlideLeft) || (rightCE.AnyButtonPressed() && !rightCE.buttonOnePressed)) // slide left
         {
             angleOffset -= 0.5f;
         }
@@ -89,9 +96,19 @@ public class PersonalWorkSpace : MonoBehaviour
 
 
         if (Waist.transform.position == Vector3.zero)
+        {
+            //transform.position = new Vector3(User.position.x, 0, User.position.z);
             WorkSpaceHeight = 1;
-        else
+            //transform.rotation = User.rotation;
+            //transform.localEulerAngles = new Vector3(0, User.localEulerAngles.y, 0);
+        }
+        else {
+            //transform.position = new Vector3(Waist.position.x, 0, Waist.position.z);
             WorkSpaceHeight = Waist.transform.position.y;
+            //transform.localEulerAngles = new Vector3(0, Waist.localEulerAngles.y, 0);
+            //transform.localEulerAngles = Waist.localEulerAngles;
+        }
+            
 
         currentObjectNumber = transform.childCount;
 
@@ -115,7 +132,7 @@ public class PersonalWorkSpace : MonoBehaviour
             transform.position = userPosition;
 
             //angleOffset = Vector3.SignedAngle(User.forward, new Vector3(0, User.position.y, 0) - User.position, Vector3.up);
-            SetupCircle(radius, smoothVertexCount, angleOffset);
+            SetupCircle(radius, smoothVertexCount, angleOffset + rotationOffset);
 
             foreach (Transform t in transform)
             {
@@ -141,7 +158,7 @@ public class PersonalWorkSpace : MonoBehaviour
             int smoothVertexCount = vertexCount * smoothDelta;
 
             //angleOffset = Vector3.SignedAngle(User.forward, Vector3.zero - User.position, Vector3.up);
-            SetupCircle(radius, smoothVertexCount, angleOffset);
+            SetupCircle(radius, smoothVertexCount, angleOffset + rotationOffset);
 
             foreach (Transform t in transform)
             {

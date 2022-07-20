@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 
 enum Layout
 {
@@ -15,6 +16,7 @@ public class PublicWorkSpace : MonoBehaviour
 {
     [Header("Reference")]
     public ViewManager VM;
+    public VRTK_ControllerEvents leftCE;
 
     [Header("Variables")]
     public float ObjectSize = 0.5f;
@@ -81,7 +83,7 @@ public class PublicWorkSpace : MonoBehaviour
             
 
         //Debug.Log(User.localEulerAngles.y);
-        if (Input.GetKeyDown(SideRight))  // slide right
+        if (Input.GetKeyDown(SideRight) || leftCE.buttonOnePressed)  // slide right
         {
             if (numRow > 1)
             {
@@ -93,7 +95,7 @@ public class PublicWorkSpace : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(SideLeft)) // slide left
+        if (Input.GetKeyDown(SideLeft) || (leftCE.AnyButtonPressed() && !leftCE.buttonOnePressed)) // slide left
         {
             if (numRow < currentObjectNumber)
             {
