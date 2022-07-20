@@ -10,19 +10,17 @@ enum Layout
     Square
 }
 
-public class ViewManager : MonoBehaviour
+
+public class PublicWorkSpace : MonoBehaviour
 {
-    [Header("Prefab")]
-    public Transform User;
-    public GameObject ObjectPrefab;
-    public Transform SmallMultipleParent;
+    [Header("Reference")]
+    public ViewManager VM;
 
     [Header("Variables")]
-    public float ObjectNumber = 100;
     public float ObjectSize = 0.5f;
     public float ObjectDistance = 0.1f;
-    public float numRow = 10;
     public float movingSpeed = 10;
+
 
     [Header("Control")]
     public string SideLeft = "j";
@@ -30,44 +28,66 @@ public class ViewManager : MonoBehaviour
     public string RotationLeft = "u";
     public string RotationRight = "o";
 
+    private Transform User;
+    private Transform Waist;
+
+    private float currentObjectNumber;
+    private float previousObjectNumber = 0;
+    private float numRow;
+    private float WorkSpaceHeight;
+
     private List<Transform> visList;
     private List<Vector3> visPositionList;
     private List<Vector3> visRotationList;
     private Layout currentLayout = Layout.Flat;
 
+
     // Start is called before the first frame update
     void Awake()
     {
+        User = VM.User;
+        Waist = VM.Waist;
+
         visList = new List<Transform>();
         visPositionList = new List<Vector3>();
         visRotationList = new List<Vector3>();
 
-        for (int i = 0; i < ObjectNumber; i++)
-        {
-            GameObject go = Instantiate(ObjectPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            go.name = "object " + (i + 1);
-            go.transform.SetParent(SmallMultipleParent);
-            go.transform.localScale = Vector3.one * ObjectSize;
+        InitiateViews();
 
-            visPositionList.Add(go.transform.localPosition);
-            visList.Add(go.transform);
-        }
+        if (Waist.transform.position == Vector3.zero)
+            WorkSpaceHeight = 1;
+        else
+            WorkSpaceHeight = Waist.transform.position.y;
 
-        float numCol = Mathf.Ceil(ObjectNumber / numRow);
-        visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-        visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+        transform.localPosition += Vector3.up * WorkSpaceHeight;
     }
 
     // Update is called once per frame
     void Update()
     {
+        currentObjectNumber = transform.childCount;
+
+        if (currentObjectNumber != previousObjectNumber) {
+            InitiateViews();
+            numRow = (int)Mathf.Sqrt(currentObjectNumber);
+
+            float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+            visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+            visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+            foreach (Transform t in visList) {
+                t.localScale = Vector3.one * ObjectSize;
+            }
+        }
+            
+
         //Debug.Log(User.localEulerAngles.y);
         if (Input.GetKeyDown(SideRight))  // slide right
         {
             if (numRow > 1)
             {
                 numRow--;
-                float numCol = Mathf.Ceil(ObjectNumber / numRow);
+                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+                Debug.Log(numCol);
                 visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
                 visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
             }
@@ -75,10 +95,10 @@ public class ViewManager : MonoBehaviour
 
         if (Input.GetKeyDown(SideLeft)) // slide left
         {
-            if (numRow < ObjectNumber)
+            if (numRow < currentObjectNumber)
             {
                 numRow++;
-                float numCol = Mathf.Ceil(ObjectNumber / numRow);
+                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
                 visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
                 visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
             }
@@ -86,12 +106,15 @@ public class ViewManager : MonoBehaviour
 
         if (Input.GetKeyDown("t")) // testing
         {
-            float numCol = Mathf.Ceil(ObjectNumber / numRow);
-            if (numCol > 4 && currentLayout == Layout.Fullcircle) {
+            float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+            if (numCol > 4 && currentLayout == Layout.Fullcircle)
+            {
                 currentLayout = Layout.Square;
                 visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
                 visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
-            } else if (currentLayout == Layout.Square) {
+            }
+            else if (currentLayout == Layout.Square)
+            {
                 currentLayout = Layout.Fullcircle;
                 visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
                 visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
@@ -103,14 +126,14 @@ public class ViewManager : MonoBehaviour
             if (currentLayout == Layout.Fullcircle)
             {
                 currentLayout = Layout.Semicircle;
-                float numCol = Mathf.Ceil(ObjectNumber / numRow);
+                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
                 visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
                 visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
             }
             else if (currentLayout == Layout.Semicircle)
             {
                 currentLayout = Layout.Flat;
-                float numCol = Mathf.Ceil(ObjectNumber / numRow);
+                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
                 visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
                 visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
             }
@@ -121,29 +144,32 @@ public class ViewManager : MonoBehaviour
             if (currentLayout == Layout.Flat)
             {
                 currentLayout = Layout.Semicircle;
-                float numCol = Mathf.Ceil(ObjectNumber / numRow);
+                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
                 visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
                 visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
             }
             else if (currentLayout == Layout.Semicircle)
             {
                 currentLayout = Layout.Fullcircle;
-                float numCol = Mathf.Ceil(ObjectNumber / numRow);
+                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
                 visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
                 visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
             }
         }
 
+
+        previousObjectNumber = currentObjectNumber;
         MoveObjects();
     }
 
-    public void CheckRotation() {
+    public void CheckRotation()
+    {
         if (currentLayout == Layout.Square)
         {
-            float numCol = Mathf.Ceil(ObjectNumber / numRow);
+            float numCol = Mathf.Ceil(currentObjectNumber / numRow);
             visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
         }
-     }
+    }
 
     private List<Vector3> UpdateObjectRotations(List<Transform> list, float numRow, float numCol, Layout layout)
     {
@@ -274,7 +300,7 @@ public class ViewManager : MonoBehaviour
                         { // left
                             finalRotation = new Vector3(0, 270, 0);
                         }
-                        
+
                         if (howManySidesHaveExtra == 1)
                         {
                             if (User.localEulerAngles.y >= 315 || User.localEulerAngles.y <= 45)
@@ -292,7 +318,8 @@ public class ViewManager : MonoBehaviour
                                 if (i == 1 + 2 * numExtraColPerSide || i == 1 + 3 * numExtraColPerSide)
                                     finalRotation = new Vector3(0, 180, 0);
                             }
-                            else {
+                            else
+                            {
                                 if (i == 0 || i == 1 + 3 * numExtraColPerSide)
                                     finalRotation = new Vector3(0, 270, 0);
                             }
@@ -320,7 +347,8 @@ public class ViewManager : MonoBehaviour
                                     finalRotation = new Vector3(0, 270, 0);
                             }
                         }
-                        else {
+                        else
+                        {
                             if (User.localEulerAngles.y >= 315 || User.localEulerAngles.y <= 45)
                             { // look forward
                                 if (i == 0 || i == 1 + numExtraColPerSide)
@@ -425,11 +453,13 @@ public class ViewManager : MonoBehaviour
             int numExtraColPerSide = 0;
             int howManySidesHaveExtra = 0;
 
-            if (numCol == 4) {
+            if (numCol == 4)
+            {
                 numExtraColPerSide = 0;
                 howManySidesHaveExtra = 0;
             }
-            else {
+            else
+            {
                 numExtraColPerSide = ((int)numCol - 1) / 4;
                 howManySidesHaveExtra = ((int)numCol - 1) % 4 + 1;
             }
@@ -442,12 +472,14 @@ public class ViewManager : MonoBehaviour
                 {
                     if (ListIndex < list.Count)
                     {
-                        if (i < 2 + numExtraColPerSide) { // front
+                        if (i < 2 + numExtraColPerSide)
+                        { // front
                             //Debug.Log(i + " front");
                             xValue = (i - ((float)numExtraColPerSide + 1) / 2) * (ObjectDistance + ObjectSize);
                             zValue = ((float)numExtraColPerSide + 1) / 2 * (ObjectDistance + ObjectSize);
                         }
-                        else if (howManySidesHaveExtra == 1 && i < 2 + 2 * numExtraColPerSide) { // right
+                        else if (howManySidesHaveExtra == 1 && i < 2 + 2 * numExtraColPerSide)
+                        { // right
                             //Debug.Log(i + " right");
                             xValue = ((float)numExtraColPerSide + 1) / 2 * (ObjectDistance + ObjectSize);
                             if (i == 1 + 2 * numExtraColPerSide)
@@ -455,12 +487,14 @@ public class ViewManager : MonoBehaviour
                             else
                                 zValue = ((1.5f * numExtraColPerSide + 1.5f) - i) * (ObjectDistance + ObjectSize);
                         }
-                        else if (howManySidesHaveExtra != 1 && i < 3 + 2 * numExtraColPerSide) { // right
+                        else if (howManySidesHaveExtra != 1 && i < 3 + 2 * numExtraColPerSide)
+                        { // right
                             //Debug.Log(i + " right");
                             xValue = ((float)numExtraColPerSide + 1) / 2 * (ObjectDistance + ObjectSize);
                             zValue = ((1.5f * numExtraColPerSide + 1.5f) - i) * (ObjectDistance + ObjectSize);
                         }
-                        else if (howManySidesHaveExtra == 1 && i < 2 + 3 * numExtraColPerSide){ // back
+                        else if (howManySidesHaveExtra == 1 && i < 2 + 3 * numExtraColPerSide)
+                        { // back
                             //Debug.Log(i + " back");
                             if (i == 1 + 3 * numExtraColPerSide)
                                 xValue = ((2.5f * numExtraColPerSide + 0.5f) - i) * (ObjectDistance + ObjectSize);
@@ -469,24 +503,27 @@ public class ViewManager : MonoBehaviour
 
                             zValue = -((float)numExtraColPerSide + 1) / 2 * (ObjectDistance + ObjectSize);
                         }
-                        else if (howManySidesHaveExtra == 2 && i < 3 + 3 * numExtraColPerSide) { // back
+                        else if (howManySidesHaveExtra == 2 && i < 3 + 3 * numExtraColPerSide)
+                        { // back
                             //Debug.Log(i + " back");
                             if (i == 2 + 3 * numExtraColPerSide)
                                 xValue = ((2.5f * numExtraColPerSide + 1.5f) - i) * (ObjectDistance + ObjectSize);
                             else
                                 xValue = ((2.5f * numExtraColPerSide + 2.5f) - i) * (ObjectDistance + ObjectSize);
-                            
+
                             zValue = -((float)numExtraColPerSide + 1) / 2 * (ObjectDistance + ObjectSize);
                         }
-                        else if (howManySidesHaveExtra != 1 && howManySidesHaveExtra != 2 && i < 4 + 3 * numExtraColPerSide) {// back
+                        else if (howManySidesHaveExtra != 1 && howManySidesHaveExtra != 2 && i < 4 + 3 * numExtraColPerSide)
+                        {// back
                             //Debug.Log(i + " back");
                             xValue = ((2.5f * numExtraColPerSide + 2.5f) - i) * (ObjectDistance + ObjectSize);
                             zValue = -((float)numExtraColPerSide + 1) / 2 * (ObjectDistance + ObjectSize);
                         }
-                        else { // left
+                        else
+                        { // left
                             //Debug.Log(i + " left");
                             xValue = -((float)numExtraColPerSide + 1) / 2 * (ObjectDistance + ObjectSize);
-                            if(howManySidesHaveExtra == 4)
+                            if (howManySidesHaveExtra == 4)
                                 zValue = (i - (3.5f * numExtraColPerSide + howManySidesHaveExtra - 0.5f)) * (ObjectDistance + ObjectSize);
                             else
                                 zValue = (i - (3.5f * numExtraColPerSide + howManySidesHaveExtra + 0.5f)) * (ObjectDistance + ObjectSize);
@@ -509,8 +546,21 @@ public class ViewManager : MonoBehaviour
     {
         for (int i = 0; i < visList.Count; i++)
         {
+            //Debug.Log(visPositionList.Count);
             visList[i].localPosition = Vector3.Lerp(visList[i].localPosition, visPositionList[i], Time.deltaTime * movingSpeed);
+            
             visList[i].rotation = Quaternion.Lerp(visList[i].rotation, Quaternion.Euler(visRotationList[i]), Time.deltaTime * movingSpeed);
+        }
+    }
+
+    private void InitiateViews()
+    {
+
+        visList.Clear();
+
+        foreach (Transform child in transform)
+        {
+            visList.Add(child);
         }
     }
 }

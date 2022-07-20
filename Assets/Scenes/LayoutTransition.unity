@@ -1431,7 +1431,7 @@ PrefabInstance:
     - target: {fileID: 3964280016969689572, guid: 281298ce46a285a46a5b430eff9d772b,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 281298ce46a285a46a5b430eff9d772b, type: 3}
@@ -2670,7 +2670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &671195971
 Transform:
   m_ObjectHideFlags: 0
@@ -3429,7 +3429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &853071401
 Transform:
   m_ObjectHideFlags: 0
@@ -3611,7 +3611,7 @@ PrefabInstance:
     - target: {fileID: 2776397578937781015, guid: eb8f32e7cc630214dafbbd00bcf90781,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7267525794545222608, guid: eb8f32e7cc630214dafbbd00bcf90781,
         type: 3}
@@ -4269,7 +4269,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &983567863
 Transform:
   m_ObjectHideFlags: 0
@@ -5011,7 +5011,7 @@ GameObject:
   - component: {fileID: 1422352745}
   - component: {fileID: 1422352746}
   m_Layer: 0
-  m_Name: SmallMultiplesController
+  m_Name: ViewManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5044,18 +5044,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   User: {fileID: 485969554936168137}
-  ObjectPrefab: {fileID: 9021928950873538981, guid: 4c59b58c06f3d044c959e1450e357d30,
+  Waist: {fileID: 1683434864}
+  ObjectPrefab: {fileID: 4044173277221429222, guid: 5d2fa9698a496c344852b20ad3e61fee,
     type: 3}
-  SmallMultipleParent: {fileID: 1747915788}
-  ObjectNumber: 90
-  ObjectSize: 0.5
-  ObjectDistance: 0.1
-  numRow: 10
-  movingSpeed: 10
-  SideLeft: j
-  SideRight: l
-  RotationLeft: u
-  RotationRight: o
+  PublicWorkSpace: {fileID: 1747915788}
+  PrivateWorkSpace: {fileID: 1702637766}
+  PersonalWorkSpaceManager: {fileID: 1702637767}
+  ObjectNumber: 9
 --- !u!1 &1423368256
 GameObject:
   m_ObjectHideFlags: 0
@@ -6025,8 +6020,8 @@ GameObject:
   - component: {fileID: 1702637768}
   - component: {fileID: 1702637767}
   m_Layer: 0
-  m_Name: PersonalWorkSpace
-  m_TagString: Untagged
+  m_Name: Personal
+  m_TagString: DisplaySurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6057,16 +6052,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e065d3461d73cf45b812e07eabf3d83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  User: {fileID: 686004066}
-  ObjectSize: 0.5
-  ObjectDistance: 0.1
+  VM: {fileID: 1422352746}
+  ObjectSize: 0.4
+  ObjectDistance: 0.2
   UserHeightOffset: 1.8
   WorkSpaceHeight: 1
-  radius: 0.7
+  minRadius: 0.7
   smoothDelta: 10
   animationSpeed: 10
-  EXP: 1
-  smoothToCircle: 0
+  angleOffset: -90
+  SlideLeft: a
+  SlideRight: d
+  SlideFront: w
+  SlideBack: s
 --- !u!120 &1702637768
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -6111,7 +6109,7 @@ LineRenderer:
   - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.1
+    widthMultiplier: 0
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -6372,13 +6370,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1747915788}
+  - component: {fileID: 1747915789}
   m_Layer: 0
-  m_Name: Wall
-  m_TagString: Untagged
+  m_Name: Public
+  m_TagString: DisplaySurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1747915788
 Transform:
   m_ObjectHideFlags: 0
@@ -6393,6 +6392,26 @@ Transform:
   m_Father: {fileID: 810911296}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1747915789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1747915787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 275d824b5f175e14baac35a54901291b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VM: {fileID: 1422352746}
+  ObjectSize: 0.5
+  ObjectDistance: 0.1
+  movingSpeed: 10
+  SideLeft: j
+  SideRight: l
+  RotationLeft: u
+  RotationRight: o
 --- !u!1 &1756124734
 GameObject:
   m_ObjectHideFlags: 0
@@ -7635,7 +7654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   context: {fileID: 0}
-  umaData: {fileID: 485969554935831518}
+  umaData: {fileID: 0}
   defaultRendererAsset: {fileID: 0}
   umaRecipe: {fileID: 11400000, guid: 1d97eb041589729479af9716fd5b42b3, type: 2}
   umaAdditionalRecipes:
@@ -8137,14 +8156,13 @@ GameObject:
   - component: {fileID: 515925409872873763}
   - component: {fileID: 485969554935831517}
   - component: {fileID: 485969554935831516}
-  - component: {fileID: 485969554935831518}
   m_Layer: 0
   m_Name: Avatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &485969554935831516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8152,7 +8170,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 485969554935831515}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02f740825b7da3646b04f9f6f4df0bd2, type: 3}
   m_Name: 
@@ -8180,366 +8198,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &485969554935831518
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 485969554935831515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15ee0e75ac30e964b8dcd0ad5f953c15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  renderers: []
-  umaGenerator: {fileID: 0}
-  atlasResolutionScale: 1
-  isMeshDirty: 0
-  isShapeDirty: 0
-  isTextureDirty: 0
-  isAtlasDirty: 0
-  animationController: {fileID: 0}
-  CharacterCreated:
-    m_PersistentCalls:
-      m_Calls: []
-  CharacterDestroyed:
-    m_PersistentCalls:
-      m_Calls: []
-  CharacterUpdated:
-    m_PersistentCalls:
-      m_Calls: []
-  CharacterBeforeUpdated:
-    m_PersistentCalls:
-      m_Calls: []
-  CharacterBeforeDnaUpdated:
-    m_PersistentCalls:
-      m_Calls: []
-  CharacterDnaUpdated:
-    m_PersistentCalls:
-      m_Calls: []
-  CharacterBegun:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RandomHead
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  AnimatorStateSaved:
-    m_PersistentCalls:
-      m_Calls: []
-  AnimatorStateRestored:
-    m_PersistentCalls:
-      m_Calls: []
-  PreUpdateUMABody:
-    m_PersistentCalls:
-      m_Calls: []
-  umaRoot: {fileID: 0}
-  _umaRecipe:
-    raceData: {fileID: 11400000, guid: 62688b7aa02fbc544916e522fcc239c7, type: 2}
-    dnaValues:
-    - dnaTypeHash: 1176655790
-    slotDataList:
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    - asset: {fileID: 0}
-      overlayScale: 1
-      tags: []
-      Races: []
-      altMaterial: {fileID: 0}
-      Suppressed: 0
-      dontSerialize: 0
-      rendererAsset: {fileID: 0}
-    sharedColors:
-    - name: Skin
-      channelMask:
-      - {r: 1, g: 1, b: 1, a: 1}
-      - {r: 1, g: 1, b: 1, a: 1}
-      - {r: 1, g: 1, b: 1, a: 1}
-      channelAdditiveMask:
-      - {r: 0, g: 0, b: 0, a: 0}
-      - {r: 0, g: 0, b: 0, a: 0}
-      - {r: 0, g: 0, b: 0, a: 0}
-      PropertyBlock:
-        alwaysUpdate: 0
-        serializedProperties: []
-      foldout: 0
-    - name: Hair
-      channelMask:
-      - {r: 1, g: 1, b: 1, a: 1}
-      - {r: 1, g: 1, b: 1, a: 1}
-      - {r: 1, g: 1, b: 1, a: 1}
-      channelAdditiveMask:
-      - {r: 0, g: 0, b: 0, a: 0}
-      - {r: 0, g: 0, b: 0, a: 0}
-      - {r: 0, g: 0, b: 0, a: 0}
-      PropertyBlock:
-        alwaysUpdate: 0
-        serializedProperties: []
-      foldout: 0
-    - name: Eyes
-      channelMask:
-      - {r: 1, g: 1, b: 1, a: 1}
-      - {r: 1, g: 1, b: 1, a: 1}
-      - {r: 1, g: 1, b: 1, a: 1}
-      channelAdditiveMask:
-      - {r: 0, g: 0, b: 0, a: 0}
-      - {r: 0, g: 0, b: 0, a: 0}
-      - {r: 0, g: 0, b: 0, a: 0}
-      PropertyBlock:
-        alwaysUpdate: 0
-        serializedProperties: []
-      foldout: 0
-  animator: {fileID: 485969554935831517}
-  KeepAvatar: 0
-  characterHeight: 2
-  characterRadius: 0.25
-  characterMass: 50
 --- !u!4 &485969554936168137
 Transform:
   m_ObjectHideFlags: 0

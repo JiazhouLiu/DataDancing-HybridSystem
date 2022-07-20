@@ -37,17 +37,5 @@ public class AvatarController : MonoBehaviour
         {
             Avatar.localPosition -= Avatar.right * translationSpeed;
         }
-
-        if (Input.GetKey("e")) // turn left
-        {
-            Avatar.localEulerAngles = new Vector3(Avatar.localEulerAngles.x, Avatar.localEulerAngles.y + rotationSpeed, Avatar.localEulerAngles.z);
-            VM.CheckRotation();
-        }
-
-        if (Input.GetKey("q")) // turn right
-        {
-            Avatar.localEulerAngles = new Vector3(Avatar.localEulerAngles.x, Avatar.localEulerAngles.y - rotationSpeed, Avatar.localEulerAngles.z);
-            VM.CheckRotation();
-        }
     }
 }
