@@ -18,24 +18,25 @@ public class AvatarController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey("w")) // front
-        {
-            Avatar.localPosition += Avatar.forward * translationSpeed;
-        }
+        GetComponent<Rigidbody>().isKinematic = true;
+        //if (Input.GetKey("w")) // front
+        //{
+        //    Avatar.localPosition += Avatar.forward * translationSpeed;
+        //}
 
-        if (Input.GetKey("s")) // back
-        {
-            Avatar.localPosition -= Avatar.forward * translationSpeed;
-        }
+        //if (Input.GetKey("s")) // back
+        //{
+        //    Avatar.localPosition -= Avatar.forward * translationSpeed;
+        //}
 
-        if (Input.GetKey("d")) // right
-        {
-            Avatar.localPosition += Avatar.right * translationSpeed;
-        }
+        //if (Input.GetKey("d")) // right
+        //{
+        //    Avatar.localPosition += Avatar.right * translationSpeed;
+        //}
 
-        if (Input.GetKey("a")) // left
-        {
-            Avatar.localPosition -= Avatar.right * translationSpeed;
-        }
+        //if (Input.GetKey("a")) // left
+        //{
+        //    Avatar.localPosition -= Avatar.right * translationSpeed;
+        //}
     }
 }
