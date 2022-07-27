@@ -129,7 +129,7 @@ public class Personal_Row : MonoBehaviour
 
                     t.localScale = Vector3.one * ObjectSize;
 
-                    t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
+                    t.LookAt(User.transform.position);
                     if (faceToUser)
                         t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
                     else
@@ -159,7 +159,7 @@ public class Personal_Row : MonoBehaviour
 
                     t.localScale = Vector3.one * ObjectSize;
 
-                    t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
+                    t.LookAt(User.transform.position);
                     if (faceToUser)
                         t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
                     else
@@ -188,7 +188,7 @@ public class Personal_Row : MonoBehaviour
 
                 t.localScale = Vector3.one * ObjectSize;
 
-                t.LookAt(User.transform.position + Vector3.up * UserHeightOffset);
+                t.LookAt(User.transform.position);
                 if (faceToUser)
                     t.localEulerAngles = new Vector3(t.localEulerAngles.x + 180, t.localEulerAngles.y, t.localEulerAngles.z + 180);
                 else

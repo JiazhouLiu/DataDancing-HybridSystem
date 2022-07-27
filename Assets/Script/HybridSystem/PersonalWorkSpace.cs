@@ -9,6 +9,7 @@ public class PersonalWorkSpace : MonoBehaviour
     [Header("Reference")]
     public ViewManager VM;
     public VRTK_ControllerEvents rightCE;
+    public VRTK_ControllerEvents leftCE;
     public Transform bottomRow;
     public Transform middleRow;
     public Transform topRow;
@@ -69,14 +70,14 @@ public class PersonalWorkSpace : MonoBehaviour
             angleOffset -= 0.5f;
         }
 
-        if (Input.GetKeyDown(SlideFront)) // slide front
+        if (Input.GetKeyDown(SlideFront) || leftCE.buttonOnePressed) // slide front
         {
             DecreaseRadius();
             //ObjectSize += 0.05f;
             //ObjectDistance += 0.05f;
         }
 
-        if (Input.GetKeyDown(SlideBack)) // slide back
+        if (Input.GetKeyDown(SlideBack) || (leftCE.AnyButtonPressed() && !leftCE.buttonOnePressed)) // slide back
         {
             IncreaseRadius();
             //ObjectSize -= 0.05f;

@@ -83,7 +83,7 @@ public class PublicWorkSpace : MonoBehaviour
             
 
         //Debug.Log(User.localEulerAngles.y);
-        if (Input.GetKeyDown(SideRight) || leftCE.buttonOnePressed)  // slide right
+        if (Input.GetKeyDown(SideRight))  // slide right
         {
             if (numRow > 1)
             {
@@ -95,7 +95,7 @@ public class PublicWorkSpace : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(SideLeft) || (leftCE.AnyButtonPressed() && !leftCE.buttonOnePressed)) // slide left
+        if (Input.GetKeyDown(SideLeft)) // slide left
         {
             if (numRow < currentObjectNumber)
             {
