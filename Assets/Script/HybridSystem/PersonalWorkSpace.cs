@@ -88,20 +88,22 @@ public class PersonalWorkSpace : MonoBehaviour
 
         if (Input.GetKeyDown("z")) 
         {
-            GameObject go = Instantiate(ObjectPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            go.name = "test object";
-            go.transform.SetParent(bottomRow);
-            go.transform.localScale = Vector3.one;
-            // setup vis model
-            Vis_PersonalWorkSpace newVis = new Vis_PersonalWorkSpace(go.name)
-            {
-                OnPrivateSpace = true
-            };
-            go.GetComponent<Vis_PersonalWorkSpace>().CopyEntity(newVis);
+            //GameObject go = Instantiate(ObjectPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            //go.name = "test object";
+            //go.transform.SetParent(bottomRow);
+            //go.transform.localScale = Vector3.one;
+            //// setup vis model
+            //Vis_PersonalWorkSpace newVis = new Vis_PersonalWorkSpace(go.name)
+            //{
+            //    OnPrivateSpace = true
+            //};
+            //go.GetComponent<Vis_PersonalWorkSpace>().CopyEntity(newVis);
+
+            VM.PublicWorkSpace.GetChild(0).SetParent(bottomRow);
         }
 
 
-        if (Waist.transform.position == Vector3.zero)
+        if (Waist.transform.position.y == 0)
         {
             //transform.position = new Vector3(User.position.x, 0, User.position.z);
             WorkSpaceHeight = 1;

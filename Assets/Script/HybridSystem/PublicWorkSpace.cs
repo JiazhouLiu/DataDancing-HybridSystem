@@ -25,8 +25,8 @@ public class PublicWorkSpace : MonoBehaviour
 
 
     [Header("Control")]
-    public string SideLeft = "j";
-    public string SideRight = "l";
+    public string SlideLeft = "j";
+    public string SlideRight = "l";
     public string RotationLeft = "u";
     public string RotationRight = "o";
 
@@ -56,7 +56,7 @@ public class PublicWorkSpace : MonoBehaviour
 
         InitiateViews();
 
-        if (Waist.transform.position == Vector3.zero)
+        if (Waist.transform.position.y == 0)
             WorkSpaceHeight = 1;
         else
             WorkSpaceHeight = Waist.transform.position.y;
@@ -83,7 +83,7 @@ public class PublicWorkSpace : MonoBehaviour
             
 
         //Debug.Log(User.localEulerAngles.y);
-        if (Input.GetKeyDown(SideRight))  // slide right
+        if (Input.GetKeyDown(SlideRight))  // slide right
         {
             if (numRow > 1)
             {
@@ -95,7 +95,7 @@ public class PublicWorkSpace : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(SideLeft)) // slide left
+        if (Input.GetKeyDown(SlideLeft)) // slide left
         {
             if (numRow < currentObjectNumber)
             {
