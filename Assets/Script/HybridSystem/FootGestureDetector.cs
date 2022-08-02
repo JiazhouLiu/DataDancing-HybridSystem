@@ -10,13 +10,13 @@ public class FootGestureDetector : MonoBehaviour
     public Transform leftFootToe;
     public Transform leftFootHeel;
     //public FootToeCollision leftFootToeCollision;
-    public ShoeRecieve leftSR;
+    public ReceiveInt leftReceive;
     // right foot
     public Transform rightFoot;
     public Transform rightFootToe;
     public Transform rightFootHeel;
     //public FootToeCollision rightFootToeCollision;
-    public ShoeRecieve rightSR;
+    public ReceiveInt rightReceive;
 
     [Header("Pressure Sensor Variables")]
     public int pressToSelectThresholdLeft = 0;
@@ -74,9 +74,11 @@ public class FootGestureDetector : MonoBehaviour
     void Update()
     {
         PressureSensorDetector();
+
         previousLeftPosition = leftFoot.position;
         previousLeftToePosition = leftFootToe.position;
         previousLeftHeelPosition = leftFootHeel.position;
+
         previousRightPosition = rightFoot.position;
         previousRightToePosition = rightFootToe.position;
         previousRightHeelPosition = rightFootHeel.position;
@@ -109,34 +111,34 @@ public class FootGestureDetector : MonoBehaviour
         //}
 
         // Sliding Detect - Left
-        if (leftSR.value.Length > 0)
+        if (leftReceive.shoeReceiver != 9999)
         {
-            if (int.Parse(leftSR.value) < holdThresholdLeft)
+            if (leftReceive.shoeReceiver < holdThresholdLeft)
                 leftHoldingFlag = true;
             else
                 leftHoldingFlag = false;
         }
 
         // Sliding Detect - Right
-        if (rightSR.value.Length > 0)
+        if (rightReceive.shoeReceiver != 9999)
         {
-            if (int.Parse(rightSR.value) < holdThresholdRight)
+            if (rightReceive.shoeReceiver < holdThresholdRight)
                 rightHoldingFlag = true;
             else
                 rightHoldingFlag = false;
         }
 
-        if (Vector3.Distance(leftFoot.position, previousLeftPosition) > 0.005f && leftHoldingFlag) // left moving
+        if (Vector3.Distance(leftFoot.position, previousLeftPosition) > 0.01f && leftHoldingFlag) // left moving
             leftMoving = true;
-        else if (Vector3.Distance(leftFoot.position, previousLeftPosition) <= 0.005f && leftSR.value.Length > 0 && int.Parse(leftSR.value) > releaseThresholdLeft) // left still
+        else if (Vector3.Distance(leftFoot.position, previousLeftPosition) <= 0.01f && leftReceive.shoeReceiver != 9999 && leftReceive.shoeReceiver > releaseThresholdLeft) // left still
             leftMoving = false;
 
         if (leftFoot.position.y > 0.1f)
             leftMoving = false;
 
-        if (Vector3.Distance(rightFoot.position, previousRightPosition) > 0.005f && rightHoldingFlag) // right moving
+        if (Vector3.Distance(rightFoot.position, previousRightPosition) > 0.01f && rightHoldingFlag) // right moving
             rightMoving = true;
-        else if (Vector3.Distance(rightFoot.position, previousRightPosition) <= 0.005f && rightSR.value.Length > 0 && int.Parse(rightSR.value) > releaseThresholdRight) // right still
+        else if (Vector3.Distance(rightFoot.position, previousRightPosition) <= 0.01f && rightReceive.shoeReceiver != 9999 && rightReceive.shoeReceiver > releaseThresholdRight) // right still
             rightMoving = false;
 
         if (rightFoot.position.y > 0.1f)
@@ -147,7 +149,8 @@ public class FootGestureDetector : MonoBehaviour
             leftTotalDistance += Vector3.Distance(leftFoot.position, previousLeftPosition);
             leftToeTotalDistance += Vector3.Distance(leftFootToe.position, previousLeftToePosition);
             leftHeelTotalDistance += Vector3.Distance(leftFootHeel.position, previousLeftHeelPosition);
-            Debug.Log("Left Moving");
+            
+            
         }
         else {
             leftTotalDistance = 0;
@@ -160,15 +163,58 @@ public class FootGestureDetector : MonoBehaviour
             rightTotalDistance += Vector3.Distance(rightFoot.position, previousRightPosition);
             rightToeTotalDistance += Vector3.Distance(rightFootToe.position, previousRightToePosition);
             rightHeelTotalDistance += Vector3.Distance(rightFootHeel.position, previousRightHeelPosition);
-            Debug.Log("Right Moving");
+
+            float horizontalMovement = rightFoot.InverseTransformDirection(rightFoot.position - previousRightPosition).y; // left or right
+            float verticalMovement = rightFoot.InverseTransformDirection(rightFoot.position - previousRightPosition).x; //  front or back
+
+            if (Mathf.Abs(horizontalMovement) > 0.01f || Mathf.Abs(verticalMovement) > 0.01f)
+            {
+                if (Mathf.Abs(horizontalMovement) > Mathf.Abs(verticalMovement))
+                {
+                    if (horizontalMovement > 0)
+                    {
+                        //Debug.Log("Sliding Left");
+                        footSlideToLeft = true;
+                    }
+                    else
+                    {
+                        //Debug.Log("Sliding Right");
+                        footSlideToRight = true;
+                    }
+                }
+                else
+                {
+                    if (verticalMovement > 0)
+                    {
+                        //Debug.Log("Sliding Back");
+                        footSlideToBack = true;
+                    }
+                    else
+                    {
+                        //Debug.Log("Sliding Front");
+                        footSlideToFront = true;
+                    }
+                }
+            }
+            else
+            {
+                footSlideToRight = false;
+                footSlideToLeft = false;
+                footSlideToFront = false;
+                footSlideToBack = false;
+            }         
         }
         else {
             rightTotalDistance = 0;
             rightToeTotalDistance = 0;
             rightHeelTotalDistance = 0;
+            footSlideToRight = false;
+            footSlideToLeft = false;
+            footSlideToFront = false;
+            footSlideToBack = false;
         }
 
-        Debug.Log("Left Foot Distance: " + leftTotalDistance + "; Left Toe Distance: " + leftToeTotalDistance + "; Left Heel Distance: " + leftHeelTotalDistance);
-        Debug.Log("Right Foot Distance: " + rightTotalDistance + "; Right Toe Distance: " + rightToeTotalDistance + "; Right Heel Distance: " + rightHeelTotalDistance);
+        //Debug.Log("Left Foot Distance: " + leftTotalDistance + "; Left Toe Distance: " + leftToeTotalDistance + "; Left Heel Distance: " + leftHeelTotalDistance);
+        //Debug.Log("Right Foot Distance: " + rightTotalDistance + "; Right Toe Distance: " + rightToeTotalDistance + "; Right Heel Distance: " + rightHeelTotalDistance);
     }
 }

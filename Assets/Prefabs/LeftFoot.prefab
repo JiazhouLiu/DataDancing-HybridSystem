@@ -14750,7 +14750,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2776397578937781003}
   - component: {fileID: 2776397578937781002}
-  - component: {fileID: 3510522465643328755}
+  - component: {fileID: 5360005488471530852}
+  - component: {fileID: 6806841370896759934}
   m_Layer: 0
   m_Name: LeftFoot
   m_TagString: Untagged
@@ -14788,7 +14789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectName: joe_secShoe
   Client: {fileID: 0}
---- !u!114 &3510522465643328755
+--- !u!114 &5360005488471530852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14797,15 +14798,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 2776397578937781015}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e5bb897ce67a4441af2b11881decec3, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b6729ebfc7bf403f9f3afb0c93ed10d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portName: COM10
-  baudRate: 115200
-  parity: 0
-  dataBits: 8
-  stopBits: 1
-  value: 
+  _receiver: {fileID: 0}
+  _address: /LeftShoe
+  _mapBundle: {fileID: 0}
+  onReceive:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6806841370896759934}
+        m_MethodName: GetInt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &6806841370896759934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2776397578937781015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bf586081031e3948852d1b6cbc82150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shoeReceiver: 9999
+  batteryReceiver: 9999
 --- !u!1 &2791230265063903241
 GameObject:
   m_ObjectHideFlags: 0

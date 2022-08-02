@@ -10,6 +10,7 @@ public class PersonalWorkSpace : MonoBehaviour
     public ViewManager VM;
     public VRTK_ControllerEvents rightCE;
     public VRTK_ControllerEvents leftCE;
+    public FootGestureDetector FGD;
     public Transform bottomRow;
     public Transform middleRow;
     public Transform topRow;
@@ -25,6 +26,7 @@ public class PersonalWorkSpace : MonoBehaviour
     public float animationSpeed = 10;
     public float angleOffset = -90; // need to switch it back to private when foot is enabled
     public float rotationOffset = 0;
+    public float footRotationSpeed = 2;
 
 
     [Header("Rows")]
@@ -60,24 +62,24 @@ public class PersonalWorkSpace : MonoBehaviour
     {
         rotationOffset = Waist.localEulerAngles.y;
 
-        if (Input.GetKey(SlideRight) || rightCE.buttonOnePressed)  // slide right
+        if (Input.GetKey(SlideRight) || FGD.footSlideToRight)  // slide right
         {
-            angleOffset += 0.5f;
+            angleOffset += 0.5f * footRotationSpeed;
         }
 
-        if (Input.GetKey(SlideLeft) || (rightCE.AnyButtonPressed() && !rightCE.buttonOnePressed)) // slide left
+        if (Input.GetKey(SlideLeft) || FGD.footSlideToLeft) // slide left
         {
-            angleOffset -= 0.5f;
+            angleOffset -= 0.5f * footRotationSpeed;
         }
 
-        if (Input.GetKeyDown(SlideFront) || leftCE.buttonOnePressed) // slide front
+        if (Input.GetKeyDown(SlideFront) || FGD.footSlideToFront) // slide front
         {
             DecreaseRadius();
             //ObjectSize += 0.05f;
             //ObjectDistance += 0.05f;
         }
 
-        if (Input.GetKeyDown(SlideBack) || (leftCE.AnyButtonPressed() && !leftCE.buttonOnePressed)) // slide back
+        if (Input.GetKeyDown(SlideBack) || FGD.footSlideToBack) // slide back
         {
             IncreaseRadius();
             //ObjectSize -= 0.05f;
@@ -131,7 +133,6 @@ public class PersonalWorkSpace : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("1");
                         if (rowHeightOffset < maxRowHeightOffset)
                             rowHeightOffset += RowHeightOffsetStep;
                     }
@@ -149,7 +150,6 @@ public class PersonalWorkSpace : MonoBehaviour
                             }
                             else
                             {
-                                Debug.Log("2");
                                 if (rowHeightOffset < maxRowHeightOffset)
                                     rowHeightOffset += RowHeightOffsetStep;
                             }
@@ -169,7 +169,6 @@ public class PersonalWorkSpace : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("4");
                         if (rowHeightOffset < maxRowHeightOffset)
                             rowHeightOffset += RowHeightOffsetStep;
                     }
@@ -177,7 +176,6 @@ public class PersonalWorkSpace : MonoBehaviour
             }
             else
             {
-                Debug.Log("5");
                 if (middleRow.childCount == middleRow.GetComponent<Personal_Row>().numberLimit && topRow.childCount < topRow.GetComponent<Personal_Row>().numberLimit)
                 {
                     middleRow.GetChild(middleRow.childCount - 1).SetParent(topRow);
