@@ -16,19 +16,13 @@ public class PublicWorkSpace : MonoBehaviour
 {
     [Header("Reference")]
     public ViewManager VM;
-    public VRTK_ControllerEvents leftCE;
+    public HandGestureDetector HGD;
 
     [Header("Variables")]
     public float ObjectSize = 0.5f;
     public float ObjectDistance = 0.1f;
-    public float movingSpeed = 10;
-
-
-    [Header("Control")]
-    public string SlideLeft = "j";
-    public string SlideRight = "l";
-    public string RotationLeft = "u";
-    public string RotationRight = "o";
+    public float ObjMovingSpeed = 10;
+    public float GridMovingSpeed = 0.5f;
 
     private Transform User;
     private Transform Waist;
@@ -43,6 +37,8 @@ public class PublicWorkSpace : MonoBehaviour
     private List<Vector3> visRotationList;
     private Layout currentLayout = Layout.Flat;
 
+    private bool expanded = false;
+    private bool collapsed = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -83,81 +79,99 @@ public class PublicWorkSpace : MonoBehaviour
             
 
         //Debug.Log(User.localEulerAngles.y);
-        if (Input.GetKeyDown(SlideRight))  // slide right
+        if ( HGD.collapse)  // slide right
         {
-            if (numRow > 1)
-            {
-                numRow--;
-                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
-                Debug.Log(numCol);
-                visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-                visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+            if (!collapsed) {
+                collapsed = true;
+                if (numRow < currentObjectNumber)
+                {
+                    numRow++;
+                    float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+                    visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+                    visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+                }
             }
+        }else
+            collapsed = false;
+
+        if (HGD.expand) // slide left
+        {
+            if (!expanded)
+            {
+                expanded = true;
+                if (numRow > 1) 
+                {
+                    numRow--;
+                    float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+                    visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+                    visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+                }
+            }
+        }
+        else
+            expanded = false;
+
+        if (HGD.moveLeft) { 
+            transform.Translate(Vector3.left * Time.deltaTime * GridMovingSpeed, Space.Self);
         }
 
-        if (Input.GetKeyDown(SlideLeft)) // slide left
-        {
-            if (numRow < currentObjectNumber)
-            {
-                numRow++;
-                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
-                visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-                visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
-            }
+        if (HGD.moveRight) {
+            transform.Translate(Vector3.right * Time.deltaTime * GridMovingSpeed, Space.Self);
         }
 
-        if (Input.GetKeyDown("t")) // testing
-        {
-            float numCol = Mathf.Ceil(currentObjectNumber / numRow);
-            if (numCol > 4 && currentLayout == Layout.Fullcircle)
-            {
-                currentLayout = Layout.Square;
-                visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-                visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
-            }
-            else if (currentLayout == Layout.Square)
-            {
-                currentLayout = Layout.Fullcircle;
-                visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-                visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
-            }
-        }
 
-        if (Input.GetKeyDown(RotationLeft)) // toe rotation left
-        {
-            if (currentLayout == Layout.Fullcircle)
-            {
-                currentLayout = Layout.Semicircle;
-                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
-                visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-                visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
-            }
-            else if (currentLayout == Layout.Semicircle)
-            {
-                currentLayout = Layout.Flat;
-                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
-                visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-                visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
-            }
-        }
+        //if (Input.GetKeyDown("t")) // testing
+        //{
+        //    float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+        //    if (numCol > 4 && currentLayout == Layout.Fullcircle)
+        //    {
+        //        currentLayout = Layout.Square;
+        //        visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+        //        visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+        //    }
+        //    else if (currentLayout == Layout.Square)
+        //    {
+        //        currentLayout = Layout.Fullcircle;
+        //        visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+        //        visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+        //    }
+        //}
 
-        if (Input.GetKeyDown(RotationRight)) // toe rotation right
-        {
-            if (currentLayout == Layout.Flat)
-            {
-                currentLayout = Layout.Semicircle;
-                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
-                visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-                visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
-            }
-            else if (currentLayout == Layout.Semicircle)
-            {
-                currentLayout = Layout.Fullcircle;
-                float numCol = Mathf.Ceil(currentObjectNumber / numRow);
-                visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
-                visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
-            }
-        }
+        //if (Input.GetKeyDown(RotationLeft)) // toe rotation left
+        //{
+        //    if (currentLayout == Layout.Fullcircle)
+        //    {
+        //        currentLayout = Layout.Semicircle;
+        //        float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+        //        visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+        //        visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+        //    }
+        //    else if (currentLayout == Layout.Semicircle)
+        //    {
+        //        currentLayout = Layout.Flat;
+        //        float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+        //        visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+        //        visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+        //    }
+        //}
+
+        //if (Input.GetKeyDown(RotationRight)) // toe rotation right
+        //{
+        //    if (currentLayout == Layout.Flat)
+        //    {
+        //        currentLayout = Layout.Semicircle;
+        //        float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+        //        visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+        //        visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+        //    }
+        //    else if (currentLayout == Layout.Semicircle)
+        //    {
+        //        currentLayout = Layout.Fullcircle;
+        //        float numCol = Mathf.Ceil(currentObjectNumber / numRow);
+        //        visPositionList = UpdateObjectPositions(visList, numRow, numCol, currentLayout);
+        //        visRotationList = UpdateObjectRotations(visList, numRow, numCol, currentLayout);
+        //    }
+        //}
 
 
         previousObjectNumber = currentObjectNumber;
@@ -549,9 +563,9 @@ public class PublicWorkSpace : MonoBehaviour
         for (int i = 0; i < visList.Count; i++)
         {
             //Debug.Log(visPositionList.Count);
-            visList[i].localPosition = Vector3.Lerp(visList[i].localPosition, visPositionList[i], Time.deltaTime * movingSpeed);
+            visList[i].localPosition = Vector3.Lerp(visList[i].localPosition, visPositionList[i], Time.deltaTime * ObjMovingSpeed);
             
-            visList[i].rotation = Quaternion.Lerp(visList[i].rotation, Quaternion.Euler(visRotationList[i]), Time.deltaTime * movingSpeed);
+            visList[i].rotation = Quaternion.Lerp(visList[i].rotation, Quaternion.Euler(visRotationList[i]), Time.deltaTime * ObjMovingSpeed);
         }
     }
 

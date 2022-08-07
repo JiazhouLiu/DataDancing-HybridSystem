@@ -19,14 +19,13 @@ public class VisInteraction_PersonalWorkSpace : MonoBehaviour
     [SerializeField]
     private Vis_PersonalWorkSpace visualisation;
     [SerializeField]
-    private BoxCollider currentBoxCollider;
-    [SerializeField]
     private Rigidbody currentRigidbody;
-    [SerializeField]
-    private InteractionType interactionType;
+
 
     public bool isGrabbing = false;
     private bool isTouchingDisplaySurface = false;
+    private bool isTouchingPublic = false;
+    private bool isTouchingPrivate = false;
     private Transform touchingSurface;
 
     private Transform previousParent;
@@ -49,6 +48,25 @@ public class VisInteraction_PersonalWorkSpace : MonoBehaviour
 
     private void Update()
     {
+        if (isTouchingPublic && isTouchingPrivate)
+        {
+            if (Mathf.Abs(transform.position.z) > Vector3.Distance(VM.Waist.position, transform.position))
+            {
+                touchingSurface = VM.PrivateWorkSpace;
+            }
+            else {
+                touchingSurface = VM.PublicWorkSpace;
+            }
+            
+        }
+        else if (isTouchingPublic)
+        {
+            touchingSurface = VM.PublicWorkSpace;
+        }
+        else if (isTouchingPrivate)
+        {
+            touchingSurface = VM.PrivateWorkSpace;
+        }
 
     }
 
@@ -84,22 +102,23 @@ public class VisInteraction_PersonalWorkSpace : MonoBehaviour
 
     private void VisUsed(object sender, InteractableObjectEventArgs e)
     {
-        if (GetComponent<Vis_PersonalWorkSpace>().Selected) // from personal to public
-        {
-            visualisation.Selected = false;
-            visualisation.OnPrivateSpace = false;
-            visualisation.OnPublicSpace = true;
+        //if (GetComponent<Vis_PersonalWorkSpace>().Selected) // from personal to public
+        //{
+        //    visualisation.Selected = false;
+        //    visualisation.OnPrivateSpace = false;
+        //    visualisation.OnPublicSpace = true;
 
-            AttachToDisplaySurface(VM.PublicWorkSpace);
-        }
-        else { // from public to personal
-            visualisation.Selected = true;
-            visualisation.OnPrivateSpace = true;
-            visualisation.OnPublicSpace = false;
+        //    AttachToDisplaySurface(VM.PublicWorkSpace);
+        //}
+        //else { // from public to personal
+        //    visualisation.Selected = true;
+        //    visualisation.OnPrivateSpace = true;
+        //    visualisation.OnPublicSpace = false;
 
-            AttachToDisplaySurface(VM.PrivateWorkSpace);
-        }
+        //    AttachToDisplaySurface(VM.PrivateWorkSpace);
+        //}
 
+        VM.ChangeVis();
     }
 
     private void OnDestroy()
@@ -124,16 +143,30 @@ public class VisInteraction_PersonalWorkSpace : MonoBehaviour
     {
         if (other.CompareTag("DisplaySurface"))
         {
+            if (other.name == "Public")
+                isTouchingPublic = true;
+
+            if (other.name == "Bottom Row")
+                isTouchingPrivate = true;
+
             isTouchingDisplaySurface = true;
-            touchingSurface = other.transform;
+
             currentRigidbody.isKinematic = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("DisplaySurface"))
+        if (other.CompareTag("DisplaySurface")) {
             isTouchingDisplaySurface = false;
+
+            if (other.name == "Public")
+                isTouchingPublic = false;
+
+            if (other.name == "Bottom Row")
+                isTouchingPrivate = false;
+        }
+            
     }
 
     private void AttachToDisplaySurface() {
@@ -146,7 +179,7 @@ public class VisInteraction_PersonalWorkSpace : MonoBehaviour
             visualisation.OnPrivateSpace = false;
             visualisation.OnPublicSpace = true;
         }
-        else if (touchingSurface.name == "Personal") {
+        else if (touchingSurface.name == "Bottom Row") {
             visualisation.Selected = true;
             visualisation.OnPrivateSpace = true;
             visualisation.OnPublicSpace = false;

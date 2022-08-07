@@ -1186,6 +1186,11 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 495121744935226074, guid: 156b786f83bfa65479fb6dccfaaf4618,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a91e5aa018939f746a91917ed7027708, type: 2}
     - target: {fileID: 543731774385144691, guid: 156b786f83bfa65479fb6dccfaaf4618,
         type: 3}
       propertyPath: m_IsActive
@@ -6659,7 +6664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &671195971
 Transform:
   m_ObjectHideFlags: 0
@@ -8867,7 +8872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &983567863
 Transform:
   m_ObjectHideFlags: 0
@@ -10302,6 +10307,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1422352745}
   - component: {fileID: 1422352746}
+  - component: {fileID: 1422352748}
   - component: {fileID: 1422352747}
   m_Layer: 0
   m_Name: ViewManager
@@ -10343,7 +10349,7 @@ MonoBehaviour:
   PublicWorkSpace: {fileID: 1747915788}
   PrivateWorkSpace: {fileID: 1665558295}
   PersonalWorkSpaceManager: {fileID: 1702637767}
-  ObjectNumber: 16
+  ObjectNumber: 31
 --- !u!114 &1422352747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10374,14 +10380,35 @@ MonoBehaviour:
   footSlideToLeft: 0
   footSlideToFront: 0
   footSlideToBack: 0
-  footRotateToRight: 0
-  footRotateToLeft: 0
   leftNormalPressFlag: 0
   rightNormalPressFlag: 0
   leftHoldingFlag: 0
   rightHoldingFlag: 0
   leftMoving: 0
   rightMoving: 0
+--- !u!114 &1422352748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422352744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31fd064a544ee6e4b8971df4f4bfe4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LeftController: {fileID: 690869450}
+  RightController: {fileID: 690869449}
+  leftCE: {fileID: 690869453}
+  rightCE: {fileID: 690869452}
+  controllerMoveThreshold: 0.05
+  leftGrabButtonOn: 0
+  rightGrabButtonOn: 0
+  expand: 0
+  collapse: 0
+  moveLeft: 0
+  moveRight: 0
 --- !u!1 &1423368256
 GameObject:
   m_ObjectHideFlags: 0
@@ -12427,14 +12454,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   VM: {fileID: 1422352746}
-  leftCE: {fileID: 690869453}
+  HGD: {fileID: 1422352748}
   ObjectSize: 0.5
   ObjectDistance: 0.1
-  movingSpeed: 10
-  SideLeft: j
-  SideRight: l
-  RotationLeft: u
-  RotationRight: o
+  ObjMovingSpeed: 10
+  GridMovingSpeed: 0.5
 --- !u!65 &1747915790
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12446,7 +12470,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 10, z: 0.1}
+  m_Size: {x: 10, y: 10, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!84 &1751143835
 RenderTexture:

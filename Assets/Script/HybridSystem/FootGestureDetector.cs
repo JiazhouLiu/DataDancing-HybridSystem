@@ -32,9 +32,9 @@ public class FootGestureDetector : MonoBehaviour
     public bool footSlideToFront = false;
     public bool footSlideToBack = false;
 
-    [Header("Rotation Gesture")]
-    public bool footRotateToRight = false;
-    public bool footRotateToLeft = false;
+    //[Header("Rotation Gesture")]
+    //public bool footRotateToRight = false;
+    //public bool footRotateToLeft = false;
 
 
     // pressure sensor
