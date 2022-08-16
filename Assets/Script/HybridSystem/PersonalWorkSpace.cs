@@ -44,6 +44,9 @@ public class PersonalWorkSpace : MonoBehaviour
 
     private Transform User;
     private Transform Waist;
+
+    private bool slideFrontFlag = false;
+    private bool slideBackFlag = false;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -72,19 +75,44 @@ public class PersonalWorkSpace : MonoBehaviour
             angleOffset -= 0.5f * footRotationSpeed;
         }
 
-        if (Input.GetKeyDown(SlideFront) || FGD.footSlideToFront) // slide front
+        if ((Input.GetKeyDown(SlideFront) || FGD.footSlideToFront) && !slideFrontFlag) // slide front
         {
+            slideFrontFlag = true;
             DecreaseRadius();
             //ObjectSize += 0.05f;
             //ObjectDistance += 0.05f;
         }
 
-        if (Input.GetKeyDown(SlideBack) || FGD.footSlideToBack) // slide back
+        if (slideFrontFlag)
         {
-            IncreaseRadius();
-            //ObjectSize -= 0.05f;
-            //ObjectDistance -= 0.05f;
+            if (!FGD.footSlideToFront)
+            {
+                slideFrontFlag = false;
+            }
         }
+        else {
+            if (Input.GetKeyDown(SlideFront) || FGD.footSlideToFront) {
+                slideFrontFlag = true;
+                DecreaseRadius();
+            }
+        }
+
+        if (slideBackFlag)
+        {
+            if (!FGD.footSlideToBack)
+            {
+                slideBackFlag = false;
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(SlideBack) || FGD.footSlideToBack)
+            {
+                slideBackFlag = true;
+                IncreaseRadius();
+            }
+        }
+
 
         if (Input.GetKeyDown("z")) 
         {

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1558849707420706162
+--- !u!1 &8832305683887522973
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1558849707420706165}
-  - component: {fileID: 1558849707420706167}
-  - component: {fileID: 921905392}
+  - component: {fileID: 8832305683887522970}
+  - component: {fileID: 8832305683887522968}
+  - component: {fileID: 7398905673658991890}
+  - component: {fileID: 8870991834472739524}
   m_Layer: 0
-  m_Name: CircleDisplay
-  m_TagString: Untagged
+  m_Name: WraparoundTable
+  m_TagString: DisplaySurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1558849707420706165
+--- !u!4 &8832305683887522970
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558849707420706162}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 8832305683887522973}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &1558849707420706167
+--- !u!120 &8832305683887522968
 LineRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558849707420706162}
+  m_GameObject: {fileID: 8832305683887522973}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -127,29 +128,42 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &921905392
+--- !u!114 &7398905673658991890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1558849707420706162}
+  m_GameObject: {fileID: 8832305683887522973}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3e4716417a415049b1c570684f9c981, type: 3}
+  m_Script: {fileID: 11500000, guid: 424d5c8e52809f34e9ce221a9bf3d8a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   User: {fileID: 0}
-  ObjectPrefab: {fileID: 9021928950873538981, guid: 4c59b58c06f3d044c959e1450e357d30,
-    type: 3}
-  IntersectionPrefab: {fileID: 3896106510792334149, guid: 44feaa710fdd1674eb834ff0a911f81a,
+  Waist: {fileID: 0}
+  ObjectPrefab: {fileID: 8064767843747849268, guid: 03785e79d2ee6b442be3f884682df58b,
     type: 3}
   ObjectSize: 0.5
   ObjectDistance: 0.5
-  ObjectNumber: 7
-  UserHeightOffset: 1.8
-  minRadius: 1
+  ObjectNumber: 6
+  UserHeightOffset: 1
+  minRadius: 0.7
   smoothDelta: 10
   animationSpeed: 10
   EXP: 1
   smoothToCircle: 0
+  faceToUser: 0
+--- !u!65 &8870991834472739524
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8832305683887522973}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

@@ -32,6 +32,9 @@ public class FootGestureDetector : MonoBehaviour
     public bool footSlideToFront = false;
     public bool footSlideToBack = false;
 
+    [Header("Velocity")]
+    public float velocity = 0;
+
     //[Header("Rotation Gesture")]
     //public bool footRotateToRight = false;
     //public bool footRotateToLeft = false;
